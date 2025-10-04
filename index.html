@@ -35,7 +35,7 @@
       margin:0;
       background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
       color: var(--text);
-      font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji", sans-serif;
       line-height:1.6;
       -webkit-font-smoothing:antialiased;
       text-rendering:optimizeLegibility;
@@ -1000,7 +1000,7 @@
       .fan.spread .card{ animation: none }
     }
 
-    /* Enhanced group caption - Fixed Heart Visibility */
+    /* ENHANCED: Group Caption with Multiple Heart Fallbacks for Mobile */
     .group-caption {
       position: relative;
       display: inline-block;
@@ -1021,15 +1021,57 @@
       animation: gradient-shift 4s ease-in-out infinite;
     }
 
+    /* MULTIPLE HEART FALLBACKS FOR MOBILE COMPATIBILITY */
     .group-caption .heart {
       display: inline-block;
-      color: var(--primary) !important;
-      -webkit-text-fill-color: var(--primary) !important;
+      position: relative;
+      margin: 0 0.2em;
       animation: heartbeat 1.5s ease-in-out infinite;
+      /* Fallback 1: Direct color */
+      color: var(--primary) !important;
+      /* Fallback 2: Override text fill */
+      -webkit-text-fill-color: var(--primary) !important;
+      text-fill-color: var(--primary) !important;
+      /* Fallback 3: Override background clip */
+      background: var(--primary) !important;
+      -webkit-background-clip: text !important;
+      background-clip: text !important;
+      /* Fallback 4: Text shadow for visibility */
+      text-shadow: 
+        0 0 10px rgba(231, 111, 81, 0.8),
+        0 0 20px rgba(231, 111, 81, 0.4),
+        0 2px 4px rgba(0, 0, 0, 0.3);
+      /* Fallback 5: Filter for glow */
+      filter: drop-shadow(0 2px 4px rgba(231, 111, 81, 0.5));
+      /* Fallback 6: Font family override */
+      font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
+      /* Fallback 7: Size and line height */
+      font-size: 1.1em;
+      line-height: 1;
+      /* Fallback 8: Ensure visibility */
+      opacity: 1 !important;
+      visibility: visible !important;
+      display: inline-block !important;
+    }
+
+    /* SVG Heart Fallback for problematic browsers */
+    .group-caption .heart-svg {
+      display: none;
+      width: 1.2em;
+      height: 1.2em;
+      vertical-align: middle;
       margin: 0 0.1em;
-      filter: drop-shadow(0 2px 4px rgba(231, 111, 81, 0.3));
-      /* Ensure heart is visible */
-      text-shadow: 0 0 10px rgba(231, 111, 81, 0.5);
+      animation: heartbeat 1.5s ease-in-out infinite;
+    }
+
+    /* Show SVG heart if emoji fails */
+    @supports not (-webkit-text-fill-color: transparent) {
+      .group-caption .heart {
+        display: none;
+      }
+      .group-caption .heart-svg {
+        display: inline-block;
+      }
     }
 
     @keyframes gradient-shift {
@@ -1082,6 +1124,9 @@
     .footer-heart {
       color: var(--primary);
       animation: heartbeat 1.5s ease-in-out infinite;
+      /* Multiple fallbacks for footer heart too */
+      font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
+      text-shadow: 0 0 10px rgba(231, 111, 81, 0.5);
     }
     
     /* Respect reduced motion */
@@ -1090,6 +1135,44 @@
       .confetti span,
       .copy [data-anim],
       .frame img{ animation:none }
+    }
+
+    /* Mobile-specific heart fixes */
+    @media (max-width: 768px) {
+      .group-caption .heart {
+        /* Extra emphasis for mobile */
+        font-size: 1.3em;
+        text-shadow: 
+          0 0 15px rgba(231, 111, 81, 1),
+          0 0 30px rgba(231, 111, 81, 0.6),
+          0 2px 6px rgba(0, 0, 0, 0.4);
+        /* Force visibility */
+        color: #E76F51 !important;
+        background: #E76F51 !important;
+        -webkit-text-fill-color: #E76F51 !important;
+        /* Ensure it's above other elements */
+        position: relative;
+        z-index: 10;
+      }
+    }
+
+    /* iOS Safari specific fix */
+    @supports (-webkit-touch-callout: none) {
+      .group-caption .heart {
+        /* iOS Safari emoji fix */
+        font-family: 'Apple Color Emoji', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -webkit-text-stroke: 0.5px rgba(231, 111, 81, 0.3);
+      }
+    }
+
+    /* Android Chrome specific fix */
+    @media screen and (-webkit-min-device-pixel-ratio: 0) {
+      .group-caption .heart {
+        /* Android emoji fix */
+        transform: translateZ(0);
+        will-change: transform;
+      }
     }
   </style>
 </head>
@@ -1185,10 +1268,14 @@
           </div>
         </div>
 
-        <!-- Fixed Heart Visibility with Multiple Fallbacks -->
+        <!-- ENHANCED: Multiple Heart Fallbacks for Mobile Compatibility -->
         <p class="group-caption">
           <span class="text-gradient">Happy Birthday</span> 
-          <span class="heart" style="display:inline-block;color:#E76F51 !important;-webkit-text-fill-color:#E76F51 !important;">❤️</span> 
+          <span class="heart">❤️</span>
+          <!-- SVG Fallback -->
+          <svg class="heart-svg" viewBox="0 0 24 24" fill="#E76F51" aria-hidden="true">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
           <span class="text-gradient">Athamma</span>
         </p>
       </div>
@@ -1512,6 +1599,50 @@
       // Prevent context menu on long press (mobile)
       lbStage.addEventListener('contextmenu', (e) => e.preventDefault());
     })();
+
+    // ENHANCED: Heart visibility fix for mobile
+    document.addEventListener('DOMContentLoaded', function() {
+      const heartElements = document.querySelectorAll('.heart');
+      
+      // Force heart visibility on mobile
+      heartElements.forEach(heart => {
+        // Check if heart is visible
+        const computedStyle = window.getComputedStyle(heart);
+        const opacity = parseFloat(computedStyle.opacity);
+        const display = computedStyle.display;
+        
+        // If heart is not visible, force it to be visible
+        if (opacity < 0.5 || display === 'none') {
+          heart.style.display = 'inline-block';
+          heart.style.opacity = '1';
+          heart.style.visibility = 'visible';
+          heart.style.color = '#E76F51';
+          heart.style.background = '#E76F51';
+          heart.style.webkitTextFillColor = '#E76F51';
+          heart.style.textShadow = '0 0 10px rgba(231, 111, 81, 0.8)';
+        }
+        
+        // Add click handler to test heart visibility
+        heart.addEventListener('click', function() {
+          console.log('Heart clicked - visibility test');
+          this.style.color = '#E76F51';
+          this.style.background = '#E76F51';
+          this.style.webkitTextFillColor = '#E76F51';
+          this.style.textShadow = '0 0 15px rgba(231, 111, 81, 1)';
+        });
+      });
+      
+      // Log heart elements for debugging
+      console.log('Heart elements found:', heartElements.length);
+      heartElements.forEach((heart, index) => {
+        console.log(`Heart ${index + 1}:`, {
+          display: window.getComputedStyle(heart).display,
+          opacity: window.getComputedStyle(heart).opacity,
+          color: window.getComputedStyle(heart).color,
+          content: window.getComputedStyle(heart, '::before').content
+        });
+      });
+    });
   </script>
 </body>
 </html>
