@@ -28,25 +28,21 @@
       --glass-border: rgba(255, 255, 255, 0.3);
     }
 
-    /* Base */
+    /* Base - FIX HORIZONTAL SCROLL */
     *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
+    html,body{
+      height:100%;
       margin:0;
+      padding:0;
       background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
       color: var(--text);
       font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji", sans-serif;
       line-height:1.6;
       -webkit-font-smoothing:antialiased;
       text-rendering:optimizeLegibility;
-      overflow-x: hidden;
-      /* Prevent pull-to-refresh on mobile */
-      overscroll-behavior: none;
-      /* Prevent text selection during swipe */
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
+      overflow-x: hidden; /* Prevent horizontal scroll */
+      width: 100%; /* Ensure full width */
+      max-width: 100vw; /* Prevent overflow */
     }
     
     /* Import premium fonts */
@@ -131,6 +127,8 @@
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--glass-border);
       transition: all 0.3s ease;
+      width: 100%;
+      max-width: 100vw;
     }
     
     .header.scrolled {
@@ -146,6 +144,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 0;
     }
     
     .brand{
@@ -157,6 +156,7 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
       letter-spacing:-0.01em;
+      white-space: nowrap;
     }
     
     .tag{
@@ -184,6 +184,9 @@
       min-height:100svh;
       display:flex;
       flex-direction:column;
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
     }
 
     /* Hero layout - Mobile First */
@@ -195,6 +198,9 @@
       align-items:center;
       padding: clamp(80px, 20vw, 100px) clamp(16px, 4vw, 20px) clamp(40px, 10vw, 60px);
       margin-top: clamp(50px, 12vw, 60px);
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
     }
     .hero__inner{
       display:flex;
@@ -204,6 +210,7 @@
       max-width:1200px;
       margin:0 auto;
       text-align: center;
+      padding: 0;
     }
     
     @media (min-width: 768px) {
@@ -257,6 +264,7 @@
       flex:1;
       max-width: 600px;
       margin: 0 auto;
+      width: 100%;
     }
     
     @media (min-width: 900px) {
@@ -291,6 +299,8 @@
       margin:clamp(12px, 3vw, 20px) 0;
       position:relative;
       line-height: 1.1;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
     }
     .title .underline{
       position:relative;
@@ -320,6 +330,8 @@
       opacity:.92;
       max-width: 100%;
       line-height: 1.7;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
     }
     
     @media (min-width: 768px) {
@@ -335,6 +347,7 @@
       place-items:center;
       max-width: 400px;
       margin: 0 auto;
+      width: 100%;
     }
     
     @media (min-width: 900px) {
@@ -432,11 +445,16 @@
       position:relative;
       isolation:isolate;
       padding: clamp(60px, 15vw, 80px) clamp(16px, 4vw, 20px);
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
     }
     .memories__inner{
       max-width:1200px;
       margin:0 auto;
       text-align:center;
+      width: 100%;
+      padding: 0;
     }
     .memories h2{
       font-size: clamp(1.5rem, 5vw, 3rem);
@@ -445,6 +463,8 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
     }
     .memories .subtle{
       color: var(--muted);
@@ -480,6 +500,7 @@
       box-shadow: var(--shadow);
       transition: all 0.3s ease;
       min-width: clamp(80px, 20vw, 120px);
+      white-space: nowrap;
     }
     
     .btn:hover {
@@ -503,6 +524,8 @@
       padding: 0;
       z-index: 9999;
       touch-action: pan-y pinch-zoom;
+      width: 100vw;
+      max-width: 100vw;
     }
     .lightbox[aria-hidden="false"]{ display: grid; animation: lbFade .25s ease both }
     @keyframes lbFade{ from{ opacity:0 } to{ opacity:1 } }
@@ -658,6 +681,8 @@
       justify-content: center;
       align-items: center;
       perspective: 1500px;
+      max-width: 100vw;
+      overflow: hidden;
     }
     
     .fan{
@@ -1000,7 +1025,7 @@
       .fan.spread .card{ animation: none }
     }
 
-    /* ENHANCED: Group Caption with Multiple Heart Fallbacks for Mobile */
+    /* ENHANCED: Group Caption with Clean Heart - NO SQUARE BOX */
     .group-caption {
       position: relative;
       display: inline-block;
@@ -1010,6 +1035,9 @@
       font-size: clamp(1.5rem, 5vw, 3rem);
       font-weight: 900;
       text-align: center;
+      width: 100%;
+      max-width: 100%;
+      overflow: hidden;
     }
 
     .group-caption .text-gradient {
@@ -1021,44 +1049,42 @@
       animation: gradient-shift 4s ease-in-out infinite;
     }
 
-    /* MULTIPLE HEART FALLBACKS FOR MOBILE COMPATIBILITY */
+    /* FIXED: Clean Heart without Square Box */
     .group-caption .heart {
       display: inline-block;
       position: relative;
-      margin: 0 0.2em;
+      margin: 0 0.1em;
       animation: heartbeat 1.5s ease-in-out infinite;
-      /* Fallback 1: Direct color */
+      /* Clean heart styling - NO BACKGROUND OR BORDER */
       color: var(--primary) !important;
-      /* Fallback 2: Override text fill */
       -webkit-text-fill-color: var(--primary) !important;
       text-fill-color: var(--primary) !important;
-      /* Fallback 3: Override background clip */
-      background: var(--primary) !important;
-      -webkit-background-clip: text !important;
-      background-clip: text !important;
-      /* Fallback 4: Text shadow for visibility */
-      text-shadow: 
-        0 0 10px rgba(231, 111, 81, 0.8),
-        0 0 20px rgba(231, 111, 81, 0.4),
-        0 2px 4px rgba(0, 0, 0, 0.3);
-      /* Fallback 5: Filter for glow */
-      filter: drop-shadow(0 2px 4px rgba(231, 111, 81, 0.5));
-      /* Fallback 6: Font family override */
+      /* Remove any background or border */
+      background: none !important;
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+      /* Subtle text shadow for visibility */
+      text-shadow: 0 0 8px rgba(231, 111, 81, 0.6);
+      /* Font family for emoji */
       font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
-      /* Fallback 7: Size and line height */
-      font-size: 1.1em;
+      font-size: 1em;
       line-height: 1;
-      /* Fallback 8: Ensure visibility */
-      opacity: 1 !important;
-      visibility: visible !important;
-      display: inline-block !important;
+      vertical-align: baseline;
+      /* Ensure no extra spacing */
+      padding: 0;
+      margin: 0 0.1em;
+      /* Remove any transform that might cause issues */
+      transform: none;
+      /* Ensure it's inline */
+      display: inline-block;
     }
 
     /* SVG Heart Fallback for problematic browsers */
     .group-caption .heart-svg {
       display: none;
-      width: 1.2em;
-      height: 1.2em;
+      width: 1.1em;
+      height: 1.1em;
       vertical-align: middle;
       margin: 0 0.1em;
       animation: heartbeat 1.5s ease-in-out infinite;
@@ -1114,6 +1140,9 @@
       padding-top:clamp(20px, 5vw, 30px);
       background: var(--glass);
       backdrop-filter: blur(10px);
+      width: 100%;
+      max-width: 100vw;
+      overflow: hidden;
     }
     
     .footer-text {
@@ -1124,9 +1153,10 @@
     .footer-heart {
       color: var(--primary);
       animation: heartbeat 1.5s ease-in-out infinite;
-      /* Multiple fallbacks for footer heart too */
+      /* Clean footer heart */
       font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
-      text-shadow: 0 0 10px rgba(231, 111, 81, 0.5);
+      text-shadow: 0 0 8px rgba(231, 111, 81, 0.5);
+      display: inline-block;
     }
     
     /* Respect reduced motion */
@@ -1140,19 +1170,14 @@
     /* Mobile-specific heart fixes */
     @media (max-width: 768px) {
       .group-caption .heart {
-        /* Extra emphasis for mobile */
-        font-size: 1.3em;
-        text-shadow: 
-          0 0 15px rgba(231, 111, 81, 1),
-          0 0 30px rgba(231, 111, 81, 0.6),
-          0 2px 6px rgba(0, 0, 0, 0.4);
-        /* Force visibility */
-        color: #E76F51 !important;
-        background: #E76F51 !important;
-        -webkit-text-fill-color: #E76F51 !important;
-        /* Ensure it's above other elements */
-        position: relative;
-        z-index: 10;
+        /* Mobile emphasis without box */
+        font-size: 1.1em;
+        text-shadow: 0 0 12px rgba(231, 111, 81, 0.8);
+        /* Ensure no box */
+        background: none !important;
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
       }
     }
 
@@ -1162,7 +1187,9 @@
         /* iOS Safari emoji fix */
         font-family: 'Apple Color Emoji', sans-serif;
         -webkit-font-smoothing: antialiased;
-        -webkit-text-stroke: 0.5px rgba(231, 111, 81, 0.3);
+        /* Remove any iOS-specific box */
+        -webkit-appearance: none;
+        appearance: none;
       }
     }
 
@@ -1172,6 +1199,8 @@
         /* Android emoji fix */
         transform: translateZ(0);
         will-change: transform;
+        /* Remove any Android-specific box */
+        -webkit-tap-highlight-color: transparent;
       }
     }
   </style>
@@ -1268,7 +1297,7 @@
           </div>
         </div>
 
-        <!-- ENHANCED: Multiple Heart Fallbacks for Mobile Compatibility -->
+        <!-- FIXED: Clean Heart without Square Box -->
         <p class="group-caption">
           <span class="text-gradient">Happy Birthday</span> 
           <span class="heart">❤️</span>
@@ -1600,48 +1629,41 @@
       lbStage.addEventListener('contextmenu', (e) => e.preventDefault());
     })();
 
-    // ENHANCED: Heart visibility fix for mobile
+    // FIXED: Clean Heart without Square Box
     document.addEventListener('DOMContentLoaded', function() {
       const heartElements = document.querySelectorAll('.heart');
       
-      // Force heart visibility on mobile
+      // Force clean heart styling
       heartElements.forEach(heart => {
-        // Check if heart is visible
-        const computedStyle = window.getComputedStyle(heart);
-        const opacity = parseFloat(computedStyle.opacity);
-        const display = computedStyle.display;
+        // Remove any unwanted styling
+        heart.style.background = 'none';
+        heart.style.border = 'none';
+        heart.style.outline = 'none';
+        heart.style.boxShadow = 'none';
+        heart.style.padding = '0';
+        heart.style.margin = '0 0.1em';
+        heart.style.width = 'auto';
+        heart.style.height = 'auto';
+        heart.style.display = 'inline-block';
+        heart.style.verticalAlign = 'baseline';
         
-        // If heart is not visible, force it to be visible
-        if (opacity < 0.5 || display === 'none') {
-          heart.style.display = 'inline-block';
-          heart.style.opacity = '1';
-          heart.style.visibility = 'visible';
-          heart.style.color = '#E76F51';
-          heart.style.background = '#E76F51';
-          heart.style.webkitTextFillColor = '#E76F51';
-          heart.style.textShadow = '0 0 10px rgba(231, 111, 81, 0.8)';
-        }
+        // Ensure proper color
+        heart.style.color = '#E76F51';
+        heart.style.webkitTextFillColor = '#E76F51';
         
-        // Add click handler to test heart visibility
+        // Add click handler to test heart
         heart.addEventListener('click', function() {
-          console.log('Heart clicked - visibility test');
-          this.style.color = '#E76F51';
-          this.style.background = '#E76F51';
-          this.style.webkitTextFillColor = '#E76F51';
-          this.style.textShadow = '0 0 15px rgba(231, 111, 81, 1)';
+          console.log('Heart clicked - clean styling test');
+          // Ensure clean styling on click
+          this.style.background = 'none';
+          this.style.border = 'none';
+          this.style.outline = 'none';
+          this.style.boxShadow = 'none';
         });
       });
       
       // Log heart elements for debugging
-      console.log('Heart elements found:', heartElements.length);
-      heartElements.forEach((heart, index) => {
-        console.log(`Heart ${index + 1}:`, {
-          display: window.getComputedStyle(heart).display,
-          opacity: window.getComputedStyle(heart).opacity,
-          color: window.getComputedStyle(heart).color,
-          content: window.getComputedStyle(heart, '::before').content
-        });
-      });
+      console.log('Clean heart elements found:', heartElements.length);
     });
   </script>
 </body>
